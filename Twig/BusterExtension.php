@@ -28,7 +28,7 @@ class BusterExtension extends \Twig_Extension
         $this->paths = $paths;
 
         $this->loadBustersFile();
-        $this->adjustAssetPath();
+        //$this->adjustAssetPath();
     }
 
     /**
@@ -37,15 +37,16 @@ class BusterExtension extends \Twig_Extension
     public function getFilters()
     {
         return [
-            new \Twig_SimpleFilter('with_buster_hash', [$this, 'addBusterHash']),
+            new \Twig_SimpleFilter('buster', [$this, 'addBusterHash']),
         ];
     }
 
     public function addBusterHash($assetPath)
     {
+        $assetPath = ltrim($assetPath, '/');
         $hash = isset($this->hashMap[$assetPath]) ? $this->hashMap[$assetPath] : 'no-buster-hash-found';
 
-        return $assetPath . "?v=$hash";
+        return '/' . $assetPath . "?v=$hash";
     }
 
     public function getName()
